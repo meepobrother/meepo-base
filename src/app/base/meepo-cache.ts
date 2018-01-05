@@ -53,7 +53,10 @@ export class MeepoCache extends Meepo implements DetailInter, BaseInter {
             this.store.set(`${this.key}`, data);
             this.onUpdate.next(data);
         }
+        this.onUpdateCache();
     }
+
+    onUpdateCache() { }
 }
 
 export interface DetailInter extends OnInit, OnDestroy {
