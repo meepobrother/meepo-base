@@ -2,7 +2,7 @@ import {
   Component, OnInit, ChangeDetectionStrategy,
   ViewChild, ElementRef, ChangeDetectorRef
 } from '@angular/core';
-import { MeepoCache } from '../../src/app/app';
+import { MeepoHistory } from '../../src/app/app';
 import { StoreService } from 'meepo-store';
 import { Title } from '@angular/platform-browser';
 
@@ -11,12 +11,12 @@ import { Title } from '@angular/platform-browser';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent extends MeepoCache {
+export class AppComponent extends MeepoHistory {
   constructor(
-    public store: StoreService,
-    public cd: ChangeDetectorRef,
-    public title: Title
-  ) { 
-    super(store,cd,title);
+    store: StoreService,
+    cd: ChangeDetectorRef,
+    title: Title
+  ) {
+    super(store, cd, title);
   }
 }

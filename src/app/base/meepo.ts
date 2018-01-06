@@ -13,7 +13,10 @@ export class Meepo implements BaseInter {
 
     ngOnInit() {
         this._calcDim();
+        this.meepoOnInit();
     }
+
+    meepoOnInit(){}
 
     public _calcDim() {
         this._win = window;
@@ -49,9 +52,7 @@ export class Meepo implements BaseInter {
         this.meepoOnDestroy();
     }
 
-    meepoOnDestroy(){
-
-    }
+    meepoOnDestroy(){}
 }
 
 export interface BaseInter extends OnDestroy {

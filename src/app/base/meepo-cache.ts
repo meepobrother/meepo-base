@@ -1,6 +1,6 @@
 import {
     Input, ChangeDetectorRef,
-    OnInit, OnDestroy
+    OnInit, OnDestroy, Optional
 } from '@angular/core';
 import { Meepo, BaseInter } from './meepo';
 import { Subject } from "rxjs/Subject";
@@ -13,38 +13,42 @@ export class MeepoCache extends Meepo implements DetailInter, BaseInter {
 
     onUpdate: Subject<any> = new Subject();
     observers: any[] = [];
+    pageTitle: string;
 
-    store: StoreService;
-    cd: ChangeDetectorRef;
-    title: Title;
     constructor(
-        store: StoreService,
-        cd: ChangeDetectorRef,
-        title: Title
+        public store: StoreService,
+        public cd: ChangeDetectorRef,
+        @Optional() public title: Title
     ) {
         super();
-        this.store = store;
-        this.cd = cd;
         let observer = this.onUpdate.subscribe(res => {
             this.data = res;
             if (this.data['title']) {
                 this.title.setTitle(this.data['title']);
             }
+            if (this.pageTitle) {
+                this.title.setTitle(this.pageTitle);
+            }
             this.cd.markForCheck();
         });
         this.observers.push(observer);
     }
-    ngOnInit() {
+
+    meepoOnInit() {
         let data = this.store.get(`${this.key}`, this.data);
         if (data) {
             this.data = data;
             if (this.data['title']) {
                 this.title.setTitle(this.data['title']);
             }
+            if (this.pageTitle) {
+                this.title.setTitle(this.pageTitle);
+            }
         }
         this.meepoInit();
         this._calcDim();
     }
+
     meepoInit() { }
     updateCache(data: any) {
         let cacheData = this.store.get(`${this.key}`, this.data);

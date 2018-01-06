@@ -1,30 +1,38 @@
-import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
+import {
+    Component, OnInit,
+    ChangeDetectorRef, Input,
+    Optional
+} from '@angular/core';
 import { Meepo } from './meepo';
 import { StoreService } from 'meepo-store';
+import { Title } from '@angular/platform-browser';
+
 export class MeepoHistory extends Meepo {
     key: string = '';
 
-    store: StoreService;
-    cd: ChangeDetectorRef;
     // 历史数据
     @Input() page: number = 1;
     @Input() psize: number = 10;
     @Input() max: number = 50;
     data: any[] = [];
 
+    pageTitle: string;
     constructor(
-        store: StoreService,
-        cd: ChangeDetectorRef
+        public store: StoreService,
+        public cd: ChangeDetectorRef,
+        @Optional() public title: Title
     ) {
         super();
-        this.store = store;
-        this.cd = cd;
+        console.log(this.store);
     }
 
-    ngOnInit() {
+    meepoOnInit() {
         this.data = this.store.getList(this.key, this.page, this.psize);
         this.meepoInit();
         this._calcDim();
+        if (this.pageTitle) {
+            this.title.setTitle(this.pageTitle);
+        }
     }
 
     meepoInit() { }
