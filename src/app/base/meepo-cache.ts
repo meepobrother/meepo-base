@@ -18,16 +18,16 @@ export class MeepoCache extends Meepo implements DetailInter, BaseInter {
     constructor(
         public store: StoreService,
         public cd: ChangeDetectorRef,
-        @Optional() public title: Title
+        public title?: Title
     ) {
         super();
         let observer = this.onUpdate.subscribe(res => {
             this.data = res;
             if (this.data['title']) {
-                this.title.setTitle(this.data['title']);
+                this.title && this.title.setTitle(this.data['title']);
             }
             if (this.pageTitle) {
-                this.title.setTitle(this.pageTitle);
+                this.title && this.title.setTitle(this.pageTitle);
             }
             this.cd.markForCheck();
         });
@@ -39,10 +39,10 @@ export class MeepoCache extends Meepo implements DetailInter, BaseInter {
         if (data) {
             this.data = data;
             if (this.data['title']) {
-                this.title.setTitle(this.data['title']);
+                this.title && this.title.setTitle(this.data['title']);
             }
             if (this.pageTitle) {
-                this.title.setTitle(this.pageTitle);
+                this.title && this.title.setTitle(this.pageTitle);
             }
         }
         this.meepoInit();

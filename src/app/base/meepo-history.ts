@@ -20,10 +20,9 @@ export class MeepoHistory extends Meepo {
     constructor(
         public store: StoreService,
         public cd: ChangeDetectorRef,
-        @Optional() public title: Title
+        public title?: Title
     ) {
         super();
-        console.log(this.store);
     }
 
     meepoOnInit() {
@@ -31,7 +30,7 @@ export class MeepoHistory extends Meepo {
         this.meepoInit();
         this._calcDim();
         if (this.pageTitle) {
-            this.title.setTitle(this.pageTitle);
+            this.title && this.title.setTitle(this.pageTitle);
         }
     }
 
