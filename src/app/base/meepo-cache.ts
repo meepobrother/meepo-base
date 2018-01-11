@@ -29,7 +29,6 @@ export class MeepoCache extends Meepo implements DetailInter, BaseInter {
             if (this.pageTitle) {
                 this.title && this.title.setTitle(this.pageTitle);
             }
-            this.cd.markForCheck();
         });
         this.observers.push(observer);
     }
