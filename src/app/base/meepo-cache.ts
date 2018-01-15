@@ -31,25 +31,29 @@ export class MeepoCache extends Meepo implements DetailInter, BaseInter {
     }
 
     public meepoOnInit() {
-        let data = this.store.get(`${this.key}`);
-        if (data) {
-            this.data = data;
-            if (this.data['title']) {
-                this.title && this.title.setTitle(this.data['title']);
-            }
-            if (this.pageTitle) {
-                this.title && this.title.setTitle(this.pageTitle);
+        if (this.store) {
+            let data = this.store.get(`${this.key}`);
+            if (data) {
+                this.data = data;
+                if (this.data['title']) {
+                    this.title && this.title.setTitle(this.data['title']);
+                }
+                if (this.pageTitle) {
+                    this.title && this.title.setTitle(this.pageTitle);
+                }
             }
         }
         super.meepoOnInit();
     }
 
     public updateCache(data: any) {
-        let cacheData = this.store.get(`${this.key}`);
-        if (data === cacheData) {
-        } else {
-            this.store.set(`${this.key}`, data);
-            this.updateData(data);
+        if (this.store) {
+            let cacheData = this.store.get(`${this.key}`);
+            if (data === cacheData) {
+            } else {
+                this.store.set(`${this.key}`, data);
+                this.updateData(data);
+            }
         }
     }
 }

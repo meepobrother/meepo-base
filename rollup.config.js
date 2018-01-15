@@ -244,6 +244,7 @@ let globals = {
     "meepo-uuid": "meepo-uuid",
     "meepo-xscroll": "meepo-xscroll",
     "meepo-empty": "meepo-empty",
+    'angular-web-storage': 'angular-web-storage'
 };
 
 let plugins = [
