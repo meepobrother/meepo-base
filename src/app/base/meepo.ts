@@ -66,7 +66,6 @@ export class Meepo implements BaseInter {
         this.observers.map((res: any) => {
             res.unsubscribe();
         });
-        this.meepoOnDestroy();
     }
 }
 
