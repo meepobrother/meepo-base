@@ -1,7 +1,7 @@
 import {
     Component, OnInit,
     ChangeDetectorRef, Input,
-    Optional
+    Optional, Injector
 } from '@angular/core';
 import { Meepo } from './meepo';
 import { StoreService } from 'meepo-store';
@@ -18,23 +18,21 @@ export class MeepoHistory extends Meepo {
 
     pageTitle: string;
     constructor(
-        public store: StoreService,
-        public cd: ChangeDetectorRef,
-        public title?: Title
+        public injector: Injector
     ) {
-        super();
+        super(injector);
     }
 
     meepoOnInit() {
-        this.data = this.store.getList(this.key, this.page, this.psize);
-        this.meepoInit();
-        this._calcDim();
-        if (this.pageTitle) {
-            this.title && this.title.setTitle(this.pageTitle);
+        if (this.store) {
+            this.data = this.store.getList(this.key, this.page, this.psize);
+            if (this.pageTitle) {
+                this.title && this.title.setTitle(this.pageTitle);
+            }
         }
+        super.meepoOnInit();
     }
 
-    meepoInit() { }
 
     addItem(e: any) {
         this.data.unshift(e);

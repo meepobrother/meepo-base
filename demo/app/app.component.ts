@@ -1,6 +1,6 @@
 import {
   Component, OnInit, ChangeDetectionStrategy,
-  ViewChild, ElementRef, ChangeDetectorRef
+  ViewChild, ElementRef, ChangeDetectorRef, Injector
 } from '@angular/core';
 import { MeepoHistory } from '../../src/app/app';
 import { StoreService } from 'meepo-store';
@@ -13,10 +13,8 @@ import { Title } from '@angular/platform-browser';
 })
 export class AppComponent extends MeepoHistory {
   constructor(
-    store: StoreService,
-    cd: ChangeDetectorRef,
-    title: Title
+    public injector: Injector
   ) {
-    super(store, cd, title);
+    super(injector);
   }
 }

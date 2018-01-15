@@ -1,4 +1,6 @@
-import { OnDestroy } from '@angular/core';
+import { OnDestroy, Injector, ChangeDetectorRef } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+
 import { Subject } from "rxjs/Subject";
 import { StoreService } from 'meepo-store';
 export class Meepo implements BaseInter {
@@ -9,14 +11,24 @@ export class Meepo implements BaseInter {
     _width: number = 0;
     _height: number = 0;
 
-    constructor() { }
+    title: Title;
+    cd: ChangeDetectorRef;
+    store: StoreService;
+    constructor(
+        public injector: Injector
+    ) {
+        this.title = this.injector.get(Title, null);
+        this.cd = this.injector.get(ChangeDetectorRef, null);
+        this.store = this.injector.get(StoreService, null)
+    }
 
     ngOnInit() {
-        this._calcDim();
         this.meepoOnInit();
     }
 
-    meepoOnInit(){}
+    meepoOnInit() {
+        this._calcDim();
+    }
 
     public _calcDim() {
         this._win = window;
@@ -45,14 +57,17 @@ export class Meepo implements BaseInter {
             }
         }
     }
+
     ngOnDestroy() {
+        this.meepoOnDestroy();
+    }
+
+    meepoOnDestroy() {
         this.observers.map((res: any) => {
             res.unsubscribe();
         });
         this.meepoOnDestroy();
     }
-
-    meepoOnDestroy(){}
 }
 
 export interface BaseInter extends OnDestroy {

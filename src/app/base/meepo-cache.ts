@@ -1,6 +1,6 @@
 import {
-    Input, ChangeDetectorRef,
-    OnInit, OnDestroy, Optional
+    Input, Injector,
+    OnInit, OnDestroy
 } from '@angular/core';
 import { Meepo, BaseInter } from './meepo';
 import { Subject } from "rxjs/Subject";
@@ -11,30 +11,27 @@ export class MeepoCache extends Meepo implements DetailInter, BaseInter {
     key: string;
     data: any = {};
 
-    onUpdate: Subject<any> = new Subject();
     observers: any[] = [];
     pageTitle: string;
 
     constructor(
-        public store: StoreService,
-        public cd: ChangeDetectorRef,
-        public title?: Title
+        public injector: Injector
     ) {
-        super();
-        let observer = this.onUpdate.subscribe(res => {
-            this.data = res;
-            if (this.data['title']) {
-                this.title && this.title.setTitle(this.data['title']);
-            }
-            if (this.pageTitle) {
-                this.title && this.title.setTitle(this.pageTitle);
-            }
-        });
-        this.observers.push(observer);
+        super(injector);
     }
 
-    meepoOnInit() {
-        let data = this.store.get(`${this.key}`, this.data);
+    public updateData(res) {
+        this.data = res;
+        if (this.data['title']) {
+            this.title && this.title.setTitle(this.data['title']);
+        }
+        if (this.pageTitle) {
+            this.title && this.title.setTitle(this.pageTitle);
+        }
+    }
+
+    public meepoOnInit() {
+        let data = this.store.get(`${this.key}`);
         if (data) {
             this.data = data;
             if (this.data['title']) {
@@ -44,28 +41,21 @@ export class MeepoCache extends Meepo implements DetailInter, BaseInter {
                 this.title && this.title.setTitle(this.pageTitle);
             }
         }
-        this.meepoInit();
-        this._calcDim();
+        super.meepoOnInit();
     }
 
-    meepoInit() { }
-    updateCache(data: any) {
-        let cacheData = this.store.get(`${this.key}`, this.data);
+    public updateCache(data: any) {
+        let cacheData = this.store.get(`${this.key}`);
         if (data === cacheData) {
         } else {
             this.store.set(`${this.key}`, data);
-            this.onUpdate.next(data);
+            this.updateData(data);
         }
-        this.onUpdateCache();
     }
-
-    onUpdateCache() { }
 }
 
 export interface DetailInter extends OnInit, OnDestroy {
     key: string;
     data: any;
-    onUpdate: Subject<any>;
-    meepoInit(): void;
     updateCache(data: any): void;
 }
